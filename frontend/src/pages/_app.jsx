@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { ToastContainer } from 'react-toastify';
@@ -22,6 +22,7 @@ import 'styles/index.scss';
 import 'styles/overrides.scss';
 
 export const API_ROOT = process.env.NEXT_PUBLIC_API_ROOT;
+export const SITE_TITLE_BASE = 'Brooklyn College Computer Science Club';
 
 const MyApp = ({ Component, pageProps }) => {
   const router = useRouter();
@@ -38,8 +39,14 @@ const MyApp = ({ Component, pageProps }) => {
       trickleSpeed: 150,
     });
 
-    const handleRouteChangeStart = () => {
-      NProgress.start();
+    const handleRouteChangeStart = (url) => {
+      // Progress bar will show only on individual event pages for now
+      // Add more to page allowlist later on when we add more dynamic pages
+      const urlStart = url.substring(0, 8);
+      const urlSplit = url.split('/');
+      if (urlStart === '/events/' && urlSplit[2] !== undefined) {
+        NProgress.start();
+      }
     };
 
     const handleRouteChangeComplete = (url) => {
@@ -67,8 +74,8 @@ const MyApp = ({ Component, pageProps }) => {
     <>
       <Head>
         <title>
-          Brooklyn College Computer Science Club | Brooklyn College's Premier
-          Computer Science Community
+          {SITE_TITLE_BASE} | Brooklyn College's Premier Computer Science
+          Community
         </title>
         <meta
           name="viewport"
@@ -89,6 +96,7 @@ const MyApp = ({ Component, pageProps }) => {
             '<script src="https://cdn.jsdelivr.net/gh/nuxodin/ie11CustomProperties@4.1.0/ie11CustomProperties.min.js"></script>'
           )}
       </Head>
+
       <HamburgerMenuProvider>
         <HamburgerMenu />
         <Header />
