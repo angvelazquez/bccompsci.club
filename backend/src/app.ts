@@ -9,7 +9,7 @@ import eventsRouter from './routes/events';
 import authRouter from './routes/auth';
 import rootRouter from './routes/root';
 
-const APP_PORT = process.env.APP_PORT || 8080;
+const APP_PORT = process.env.PORT || 8080;
 export const isProduction = process.env.NODE_ENV === 'production';
 
 if (!isProduction) {
@@ -39,7 +39,7 @@ const startServer = async () => {
   // Initialize middleware
   app.use(express.json());
   app.use(morgan('tiny'));
-  // app.use(cors);
+  app.use(cors());
   app.use(passport.initialize());
 
   // Initialize routes
